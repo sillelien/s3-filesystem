@@ -6,7 +6,7 @@ then
 fi
 
 touch /tmp/.running
-trap "rm /tmp/.running" EXIT
+trap "rm /tmp/.running || : " EXIT
 
 local_dir=${2}
 s3_dir=${1}
@@ -44,5 +44,3 @@ while [ $dir_size -gt ${upper} ] ; do
     find $local_dir -type f -newer ${local_dir}/.quota-exceeded -exec rm -f {} \;
     find $local_dir -type d -empty -delete
 done
-
-rm /tmp/.running
