@@ -1,11 +1,11 @@
-Note experimental, use at your own risk :-)
+NB: experimental, use at your own risk :-)
 
 Creates am S3 backed filesystem using yas3fs which can then be mounted by other Docker containers for fun and profit.
 
 Features
 
 * S3 backed filesystem
-* Daily/Montlhly tarball backups to S3
+* Daily/montlhly tarball backups to S3
 * Simple quota system
 
 Try it in fig using a fig.yml
