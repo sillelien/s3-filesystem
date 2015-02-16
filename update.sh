@@ -24,7 +24,7 @@ then
     touch ${local_dir}/.syncinit
 fi
 
-inotifywait -t 60 -r ${local_dir}
+inotifywait -t 180 -r ${local_dir}
 
 changed=$(find $local_dir -newer ${local_dir}/.synclast -type f -not -path "${local_dir}/.sync*/*" | wc -l)
 
