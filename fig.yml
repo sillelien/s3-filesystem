@@ -1,8 +1,0 @@
-fs:
-  build: .
-  environment:
-    GITHUB_USER: neilellis
-    GITHUB_PROJECT: "codeserver-example"
-    GITHUB_BRANCH: master
-    AWS_ACCESS_KEY_ID: "AKIAJX6FFXRS26RQTW7Q"
-    AWS_SECRET_ACCESS_KEY: "mTkzTS9hP94S9Kim29YrinmPfmz3BZ9Fw65RB13"
