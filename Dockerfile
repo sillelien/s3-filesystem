@@ -8,12 +8,14 @@ ENV AWS_S3_PATH /test
 
 VOLUME ${AWS_S3_LOCAL_MOUNT_POINT}
 
-RUN apt-get update && apt-get -y install fuse python-pip && pip install yas3fs && \
+RUN apt-get update && apt-get -y install fuse python-pip && pip install yas3fs awscli && \
     sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf && \
     chmod a+r /etc/fuse.conf && yas3fs -h
 
 ADD yas3fs.sh /etc/service/yas3fs/run
-RUN chmod 755 /etc/service/yas3fs/run
+ADD backup_daily.sh /etc/cron.daily/backup
+ADD backup_monthly.sh /etc/cron.monthly/backup
+RUN chmod 755 /etc/service/yas3fs/run /etc/cron.daily/backup /etc/cron.monthly/backup
 
 
 CMD ["/sbin/my_init"]
