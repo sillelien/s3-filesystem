@@ -5,7 +5,7 @@ Creates am S3 backed filesystem using yas3fs which can then be mounted by other 
 Features
 
 * S3 backed filesystem
-* Daily/montlhly tarball backups to S3
+* Daily/monthly tarball backups to S3
 * Simple quota system
 
 Try it in fig using a fig.yml
