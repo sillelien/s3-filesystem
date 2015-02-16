@@ -15,7 +15,7 @@ RUN apt-get update && apt-get -y install fuse python-pip && pip install yas3fs a
 ADD yas3fs.sh /etc/service/yas3fs/run
 ADD backup_daily.sh /etc/cron.daily/backup
 ADD backup_monthly.sh /etc/cron.monthly/backup
-RUN chmod 755 /etc/service/yas3fs/run /etc/cron.daily/backup /etc/cron.monthly/backup
-
+ADD limit_size.sh /root/limit_size.sh
+RUN chmod 755 /etc/service/yas3fs/run /etc/cron.daily/backup /etc/cron.monthly/backup /root/limit_size.sh
 
 CMD ["/sbin/my_init"]
