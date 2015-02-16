@@ -1,0 +1,31 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+
+  override:
+    - docker build -t neilellis/codeserver-secure-s3-fs .
+
+test:
+  override:
+     - echo "No tests"
+#    - docker run -d -p 8080:80 neilellis/codeserver-secure-s3-fs; sleep 5
+#    - curl --retry 10 --retry-delay 5 -v http://localhost:80
+
+deployment:
+  all:
+    branch: /.*/
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS tutum.co
+      - "docker tag -f neilellis/codeserver-secure-s3-fs tutum.co/neilellis/codeserver-secure-s3-fs:${CIRCLE_BRANCH}"
+      - "docker push tutum.co/neilellis/codeserver-secure-s3-fs:${CIRCLE_BRANCH}"
+
+#notify:
+#  webhooks:
+#    - url: https://circleci.com/api/v1/project/neilellis/codeserver-nodejs/tree/master?circle-token=1b9d0f711a0b8ca49df22b9be1810bb2a7d0b190
+#    - url: https://circleci.com/api/v1/project/neilellis/codeserver-generic/tree/master?circle-token=e8e2601b0d36d319dde97d6f9135a3ad55cc848d
+
+
