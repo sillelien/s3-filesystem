@@ -1,9 +1,7 @@
 #!/bin/bash
 cd /tmp
 stamp=$(date +"%Y-%m")
-if [[ "$AWS_ACCESS_KEY_ID" != "none" ]]
-then
-    tar czf monthly-var.tar.gz /usr/local/var
-    aws s3 cp monthly-var.tar.gz s3://codeserver-backup/monthly/svc/${SERVICE_ID}/var-backup-${stamp}.tar.gz
-    rm monthly-var.tar.gz
-fi
+tar czf monthly.tar.gz $AWS_S3_LOCAL_MOUNT_POINT
+aws s3 cp monthly.tar.gz s3://${AWS_S3_BUCKET}/backups/${AWS_S3_PATH}/monthly-${stamp}.tar.gz
+rm monthly.tar.gz
+
