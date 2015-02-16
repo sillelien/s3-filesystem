@@ -24,6 +24,7 @@ fs:
     SHARE_VOLUME: "/usr/local/var"
     SIMPLE_QUOTA_LOWER_MB: 100
     SIMPLE_QUOTA_UPPER_MB: 1024
+    SIMPLE_QUOTA_MAX_FILES: 100
 
 ```
 
