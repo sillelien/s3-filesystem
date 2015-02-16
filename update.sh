@@ -20,20 +20,12 @@ echo "$local_dir usage is currently ${dir_size}MB limit is ${lower}MB (hard limi
 if [ ! -f ${local_dir}/.syncinit ]
 then
     echo "Copying from S3"
-    rsync -arv --delete-after --backup --backup-dir=${local_dir}/.syncbackrev  --exclude ".sync*"  ${s3_dir}/ ${local_dir}/
+    rsync -arv --delete-after --temp-dir=/tmp  --backup --backup-dir=${local_dir}/.syncbackrev  --exclude ".sync*"  ${s3_dir}/ ${local_dir}/
     touch ${local_dir}/.syncinit
 fi
 
-inotifywait -t 180 -r ${local_dir}
+inotifywait -e modify -e create -e move -e delete -e attrib -e close_write -t 3600 -r ${local_dir}
 
-changed=$(find $local_dir -newer ${local_dir}/.synclast -type f -not -path "${local_dir}/.sync*/*" | wc -l)
-
-
-if (( $changed == 0 )) && [[ -f ${local_dir}/.synclast ]]
-then
-    echo "No changes"
-    exit 0
-fi
 
 num_files=$(find $local_dir  -type f -not -path "${local_dir}/.sync*/*" | wc -l)
 
@@ -58,8 +50,7 @@ else
         rm ${local_dir}/.sync-quota-exceeded
     fi
     touch ${local_dir}/.synclast
-    sleep 1
-    rsync -arv --delete-after --temp-dir=/tmp --whole-file --timeout=60 --delay-updates --backup --backup-dir=${local_dir}/.syncbackup  --exclude ".sync*"   ${local_dir}/ ${s3_dir}/
+    rsync -arv  --delete --temp-dir=/tmp  --timeout=60 --backup --backup-dir=${local_dir}/.syncbackup  --exclude ".sync*"   ${local_dir}/ ${s3_dir}/
 fi
 
 #When over upper quota, we delete the files created since we hit the lower quota
