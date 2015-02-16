@@ -1,28 +1,30 @@
-#!/bin/bash -eu
+#!/bin/bash -eux
 if [ -f /tmp/.running ]
 then
-    echo "Already running"
+    echo "Already running!!!"
     exit 0
 fi
 
 touch /tmp/.running
-trap "rm /tmp/.running || : " EXIT
+trap "rm /tmp/.running ; sleep 10 " EXIT
 
-local_dir=${2}
-s3_dir=${1}
-lower=${3}
-upper=${4}
-max_files=${5}
+s3_dir=${AWS_S3_LOCAL_MOUNT_POINT}
+local_dir=${SHARE_VOLUME}
+lower=${SIMPLE_QUOTA_LOWER_MB}
+upper=${SIMPLE_QUOTA_UPPER_MB}
+max_files=${SIMPLE_QUOTA_MAX_FILES}
 
 dir_size=$( du -sm "$local_dir" | cut -f1 )
-echo "$local_dir usage is currently $dir_size limit is ${3}/${4} Mb"
+echo "$local_dir usage is currently ${dir_size}MB limit is ${lower}MB (hard limit ${upper}) MB"
 
-if [ ! -f $2/.syncinit ]
+if [ ! -f ${local_dir}/.syncinit ]
 then
     echo "Copying from S3"
     rsync -arv --delete-after --backup --backup-dir=${local_dir}/.syncbackrev  --exclude ".sync*"  ${s3_dir}/ ${local_dir}/
-    touch $2/.syncinit
+    touch ${local_dir}/.syncinit
 fi
+
+inotifywait -r ${local_dir}
 
 changed=$(find $local_dir -newer ${local_dir}/.synclast -type f -not -path "${local_dir}/.sync*/*" | wc -l)
 
@@ -35,6 +37,11 @@ fi
 
 num_files=$(find $local_dir  -type f -not -path "${local_dir}/.sync*/*" | wc -l)
 
+
+if (( ${num_files} > ${max_files} ))
+then
+    echo "Too many files: ${num_files} > ${max_files}"
+fi
 
 if (( ${dir_size} > ${lower} ))  ||  (( ${num_files} > ${max_files} ))
 then

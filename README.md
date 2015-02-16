@@ -7,7 +7,7 @@ Features
 * Local volume continuously syncs to FUSE mounted S3 volume using rsync
 * Local volume remains responsive and fast, but regularly updates to S3
 * Local volume can be imported by other containers, S3 volume remains private
-* Only syncs if local volume files have changed
+* Only syncs if local volume files have changed, uses inotify for immediate syncs
 * Simple quota system, stops files being copied to S3 volume once limit is reached
 * File count limit, because this is all very, very slow :-)
 * Daily/monthly tarball backups to S3
