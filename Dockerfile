@@ -8,7 +8,7 @@ ENV AWS_S3_PATH /
 
 VOLUME ${AWS_S3_LOCAL_MOUNT_POINT}
 
-RUN apt-get update && apt-get -y install ntp fuse python-pip && pip install yas3fs && \
+RUN apt-get update && apt-get -y install fuse python-pip && pip install yas3fs && \
     sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf && \
     chmod a+r /etc/fuse.conf && yas3fs -h
 
