@@ -1,5 +1,4 @@
-#!/bin/bash
-export S3_URL=$(echo "s3://codeserverlocalvars/${GITHUB_USER}.${GITHUB_PROJECT}.${GITHUB_BRANCH}" | tr  -d '-')
+#!/bin/bash -eux
+export S3_URL=$(echo "s3://codeserverlocalvars/${GITHUB_USER}/${GITHUB_PROJECT}/${GITHUB_BRANCH}" | tr '-' '.')
+exec yas3fs -df --mkdir  $S3_URL /usr/local/var
 
-
-exec yas3fs -df --region eu-west-1 $S3_URL /usr/local/var
