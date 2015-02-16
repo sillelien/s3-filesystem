@@ -58,7 +58,8 @@ else
         rm ${local_dir}/.sync-quota-exceeded
     fi
     touch ${local_dir}/.synclast
-    rsync -arv --delete-after --backup --backup-dir=${local_dir}/.syncbackup  --exclude ".sync*"   ${local_dir}/ ${s3_dir}/
+    sleep 1
+    rsync -arv --delete-after --temp-dir=/tmp --whole-file --timeout=60 --delay-updates --backup --backup-dir=${local_dir}/.syncbackup  --exclude ".sync*"   ${local_dir}/ ${s3_dir}/
 fi
 
 #When over upper quota, we delete the files created since we hit the lower quota
