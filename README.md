@@ -1,12 +1,14 @@
 NB: experimental, use at your own risk :-)
 
-Creates am S3 backed filesystem using yas3fs which can then be mounted by other Docker containers for fun and profit.
+Creates am S3 backed filesystem using yas3fs which is synced to a local volume which can then be mounted by other Docker containers for fun and profit.
 
 Features
 
-* S3 backed filesystem
+* Local volume continuously syncs to FUSE mounted S3 volume using rsync
+* Local volume can be imported by other containers, S3 volume remains private
+* Simple quota system, stops files being copied to S3 volume once limit is reached
+* File count limit, because this is all very, very slow :-)
 * Daily/monthly tarball backups to S3
-* Simple quota system
 
 Try it in fig using a fig.yml
 
