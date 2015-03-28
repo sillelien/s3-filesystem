@@ -13,12 +13,7 @@ ENV SIMPLE_QUOTA_UPPER_MB 1024
 
 #This goes to S3
 VOLUME /usr/local/var
-#This doesn't
-VOLUME /usr/local/app
-#This doesn't and can be emptied at any time
-VOLUME /usr/local/tmp
-#This doesn't either
-VOLUME /usr/local/cache
+
 
 RUN apt-get update && apt-get -y install inotify-tools rsync fuse python-pip && pip install yas3fs awscli && \
     sed -i'' 's/^# *user_allow_other/user_allow_other/' /etc/fuse.conf && \
