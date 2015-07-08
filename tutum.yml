@@ -1,0 +1,19 @@
+fs:
+  build: vizzbuzz/s3-filesystem
+  privileged: true
+  environment:
+    AWS_S3_PATH: example
+    AWS_ACCESS_KEY_ID: changeme
+    AWS_SECRET_ACCESS_KEY: changeme
+    AWS_S3_BUCKET: mybucket
+    AWS_S3_LOCAL_MOUNT_POINT: "/s3"
+    SHARE_VOLUME: "/var/share"
+    SIMPLE_QUOTA_LOWER_MB: 100
+    SIMPLE_QUOTA_UPPER_MB: 1024
+    SIMPLE_QUOTA_MAX_FILES: 100
+
+test:
+  image: alpine
+  volumes-from:
+    - fs
+  command: "echo test > /var/share/test.txt"

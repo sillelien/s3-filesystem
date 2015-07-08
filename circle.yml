@@ -7,7 +7,7 @@ dependencies:
     - "~/docker"
 
   override:
-    - docker build -t neilellis/codeserver-secure-s3-fs .
+    - docker build -t s3fs .
 
 test:
   override:
@@ -20,8 +20,8 @@ deployment:
     branch: /.*/
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS tutum.co
-      - "docker tag -f neilellis/codeserver-secure-s3-fs tutum.co/neilellis/codeserver-secure-s3-fs:${CIRCLE_BRANCH}"
-      - "docker push tutum.co/neilellis/codeserver-secure-s3-fs:${CIRCLE_BRANCH}"
+      - "docker tag -f s3fs tutum.co/neilellis/s3fs:${CIRCLE_BRANCH}"
+      - "docker push tutum.co/neilellis/s3fs:${CIRCLE_BRANCH}"
 
 #notify:
 #  webhooks:
